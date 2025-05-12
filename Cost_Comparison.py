@@ -97,24 +97,43 @@ def blank_checker(question):
 def currency(x):
     return f"${x:.2f}"
 
+def check_alt_unit(total_cost,total_amount_in_unit):
+    for i in range (0,len(total_cost)):
+        net=int(math.log(total_amount_in_unit[i],10))-int(math.log(total_cost[i],10))
+        if net==0 and :
+            net=1
+        elif net<0:
+            net=0
+    
 # Collect information of products
-def information_collector(amount_products,unit):
+def information_collector(unit):
     total_product_name=[]
     total_amount_in_unit=[]
     total_cost=[]
     total_unit_price=[]
     print("\n\n")
     print(make_statement("Item's Information","_"))
-    for i in range(0,amount_products):
-        print(f"\nItem {i+1}")
-        product_name = blank_checker("Name: ")
-        amount_in_unit = float(f"{num_check(f"How much in {unit}? ",float):.2f}")
+    amount_of_item=1
+    while True:
+        print(f"""\nItem {amount_of_item} (Input "xxx" at "Name" to exit)""")
+        if amount_of_item==1:   # force user to input at least one item here
+            while(True):
+                product_name = blank_checker("""Name: """) 
+                if(blank_checker!="xxx"):
+                    break
+                print("Please input at least 1 product...")
+        else:
+            product_name = blank_checker("""Name: """)
+
+        amount_in_unit = float(f"{num_check(f"How much in {unit}? ",float):.5f}")
         cost=num_check("How much does it cost? $", float)
         total_product_name.append(product_name)
         total_amount_in_unit.append(amount_in_unit)
         total_cost.append(cost)
-        unit_price=float(f"{(cost/amount_in_unit):.2f}")
+        unit_price=float(f"{(cost/amount_in_unit):.5f}")
         total_unit_price.append(unit_price)
+        amount_of_item+=1
+
     information_dict={
         'Name':total_product_name,
         f'{unit}':total_amount_in_unit,
@@ -123,9 +142,11 @@ def information_collector(amount_products,unit):
     }
     information_frame=pandas.DataFrame(information_dict)
     print("_"*26)
-    return information_frame,total_unit_price,total_cost
+    return information_frame,total_unit_price,total_cost,amount_of_item
 
 
+# def alternative_unit(information):
+    
 
 # ‼️‼️Main‼️‼️
 if yes_no("Do you want to read the instruction? "):
@@ -135,13 +156,14 @@ if yes_no("Do you want to read the instruction? "):
 product_type = blank_checker("What type of product you want to consider today? ")
 unit=blank_checker("What is the unit for that product? ")
 budget = num_check("What is your budget? $", float)
-product_amount = num_check(f"How many {product_type} product you want to consider? ",int)
 
 # collecting information of products
-information = information_collector(product_amount,unit)
+information = information_collector(unit)
 information_frame=information[0]
 total_unit_price=information[1]
 total_cost=information[2]
+product_amount=information[3]
+                    # SPECIAL : ‼️ ALTERNATIVE UNIT ‼️
 
 # apply $ marks into cost
 information_frame['Cost']=information_frame['Cost'].apply(currency)
