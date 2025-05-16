@@ -188,9 +188,9 @@ def alternative_unit(information_frame,Net,unit):
     alt_frame=pandas.DataFrame()
     alt_frame['Name']=information_frame['Name']
     alt_frame[f'{unit}']=information_frame[unit]
-    alt_frame[f'Cost ({Net}$)']=information_frame['Cost']*Net
-    alt_frame[f'Alt Unit Price ({Net}$/{unit})']=(alt_frame[f'Cost ({Net}$)']/alt_frame[f'{unit}'])
-    alt_frame[f'Alt Unit Price ({Net}$/{unit})']=alt_frame[f'Alt Unit Price ({Net}$/{unit})'].apply(round_5sf)
+    alt_frame[f'Cost ($/{Net})']=information_frame['Cost']*Net
+    alt_frame[f'Alt Unit Price ($/{unit}*{Net})']=(alt_frame[f'Cost ($/{Net})']/alt_frame[f'{unit}'])
+    alt_frame[f'Alt Unit Price ($/{unit}*{Net})']=alt_frame[f'Alt Unit Price ($/{unit}*{Net})'].apply(round_5sf)
     return alt_frame
 
 
