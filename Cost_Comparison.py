@@ -214,6 +214,7 @@ Net=information[4]
                     # SPECIAL : ‼️ ALTERNATIVE UNIT ‼️
 if Net>1:
     alt_frame=alternative_unit(information_frame,Net,unit)
+        
 
 # apply $ marks into cost
 information_frame['Cost']=information_frame['Cost'].apply(currency)
@@ -239,9 +240,10 @@ suggestion_table=(information_frame.iloc[suggestion_index])  # find and create a
 suggestion_table=tabulate(suggestion_table, headers="keys", tablefmt="grid") # from pandas table, create a tabulate(decorated) table
 
 #suggestion but ALTERNATIVE
-alt_suggestion=(alt_frame.iloc[suggestion_index])
-alt_frame=tabulate(alt_frame,headers="keys", tablefmt="grid")
-alt_suggestion=tabulate(alt_suggestion,headers="keys", tablefmt="grid")
+if Net>1:
+    alt_suggestion=(alt_frame.iloc[suggestion_index])
+    alt_frame=tabulate(alt_frame,headers="keys", tablefmt="grid")
+    alt_suggestion=tabulate(alt_suggestion,headers="keys", tablefmt="grid")
 
 if total_cost[suggestion_index_initial]>budget: # Worst cases, none of the option is valid as its all greater than budget
     Suggestion_announce=f"\nUnfortunately, there is no valid product for you to buy as the product's costs are greater than your budget."
@@ -252,8 +254,9 @@ else:
     # Asking if they want to see alternative table
     alt_output=""   # Create a variable in advance, regardless what user answer in yes_no_unit, the program still print alt_output out
     # if user say "yes" then alt_output will be every output involve alternative table; otherwise alt_ouput is empty so its output nothing
-    if yes_no_alt_unit("""Do you want to see Alternative-Unit Suggestions?(enter "i" for more information) """):
-        alt_output=f"""{make_statement("Alternative Unit","=")}\n\n{make_statement("Alternative Unit Information","-")}\n{alt_frame}\n\nThis is the list of suggestion(s) for you based on our Alternative Unit:\n{alt_suggestion}"""
+    if Net>1:
+        if yes_no_alt_unit("""Do you want to see Alternative-Unit Suggestions?(enter "i" for more information) """):
+            alt_output=f"""{make_statement("Alternative Unit","=")}\n\n{make_statement("Alternative Unit Information","-")}\n{alt_frame}\n\nThis is the list of suggestion(s) for you based on our Alternative Unit:\n{alt_suggestion}"""
 information_frame=tabulate(information_frame, headers="keys", tablefmt="grid")
 
 
