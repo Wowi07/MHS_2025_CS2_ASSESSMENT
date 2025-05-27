@@ -195,6 +195,7 @@ def alternative_unit(information_frame,Net,unit):
 
 
 # ‼️‼️Main‼️‼️
+print("\n                        🛒📈 Price Comparison 🛒📈\n")
 if yes_no("Do you want to read the instruction? "):
     instruction()
 
